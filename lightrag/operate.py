@@ -1232,6 +1232,8 @@ async def _build_query_context(
     {text_units_context}
     ```
     """.strip()
+
+    print(result)
     return result
 
 
@@ -1615,6 +1617,7 @@ async def _get_edge_data(
         # Get file path from node data
         file_path = n.get("file_path", "unknown_source")
 
+
         entites_section_list.append(
             [
                 i,
@@ -1626,6 +1629,7 @@ async def _get_edge_data(
                 file_path,
             ]
         )
+
     entities_context = list_of_list_to_csv(entites_section_list)
 
     text_units_section_list = [["id", "content", "file_path"]]
@@ -2111,3 +2115,8 @@ async def query_with_keywords(
         )
     else:
         raise ValueError(f"Unknown mode {param.mode}")
+
+async def get_all_high_level_topics(graph: BaseGraphStorage) -> list[str]:
+    all_nodes = await graph.get_all_nodes()
+    entity_types = {node["entity_type"] for node in all_nodes if "entity_type" in node}
+    return sorted(entity_types)

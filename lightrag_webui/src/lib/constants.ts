@@ -70,7 +70,7 @@ export const supportedFileTypes = {
 }
 
 export const SiteInfo = {
-  name: 'LightRAG',
+  name: 'ArGraph',
   home: '/',
-  github: 'https://github.com/HKUDS/LightRAG'
+  github: ''
 }

@@ -15,10 +15,22 @@ import {
 } from '@/components/ui/Select'
 import { useSettingsStore } from '@/stores/settings'
 import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function QuerySettings() {
   const { t } = useTranslation()
   const querySettings = useSettingsStore((state) => state.querySettings)
+
+  const [graphTopics, setGraphTopics] = useState<string[]>([])
+
+  useEffect(() => {
+    axios.get('/api/high_level_topics').then(res => {
+      setGraphTopics(res.data || [])
+    }).catch(err => {
+      console.error("Failed to load high-level topics:", err)
+    })
+  }, [])
 
   const handleChange = useCallback((key: keyof QueryRequest, value: any) => {
     useSettingsStore.getState().updateQuerySettings({ [key]: value })
@@ -34,7 +46,7 @@ export default function QuerySettings() {
         <div className="relative size-full">
           <div className="absolute inset-0 flex flex-col gap-2 overflow-auto px-2">
             {/* Query Mode */}
-            <>
+            {/* <>
               <Text
                 className="ml-1"
                 text={t('retrievePanel.querySettings.queryMode')}
@@ -58,10 +70,11 @@ export default function QuerySettings() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </>
+            </> */}
+
 
             {/* Response Format */}
-            <>
+            {/* <>
               <Text
                 className="ml-1"
                 text={t('retrievePanel.querySettings.responseFormat')}
@@ -83,10 +96,10 @@ export default function QuerySettings() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </>
+            </> */}
 
             {/* Top K */}
-            <>
+            {/* <>
               <Text
                 className="ml-1"
                 text={t('retrievePanel.querySettings.topK')}
@@ -101,10 +114,10 @@ export default function QuerySettings() {
                 min={1}
                 placeholder={t('retrievePanel.querySettings.topKPlaceholder')}
               />
-            </>
+            </> */}
 
             {/* Max Tokens */}
-            <>
+            {/* <>
               <>
                 <Text
                   className="ml-1"
@@ -154,10 +167,10 @@ export default function QuerySettings() {
                   placeholder={t('retrievePanel.querySettings.maxTokensLocalContext')}
                 />
               </>
-            </>
+            </> */}
 
             {/* History Turns */}
-            <>
+            {/* <>
               <Text
                 className="ml-1"
                 text={t('retrievePanel.querySettings.historyTurns')}
@@ -174,7 +187,7 @@ export default function QuerySettings() {
                 min={0}
                 placeholder={t('retrievePanel.querySettings.historyTurnsPlaceholder')}
               />
-            </>
+            </> */}
 
             {/* Keywords */}
             <>
@@ -185,7 +198,7 @@ export default function QuerySettings() {
                   tooltip={t('retrievePanel.querySettings.hlKeywordsTooltip')}
                   side="left"
                 />
-                <Input
+                {/* <Input
                   id="hl_keywords"
                   type="text"
                   value={querySettings.hl_keywords?.join(', ')}
@@ -197,7 +210,23 @@ export default function QuerySettings() {
                     handleChange('hl_keywords', keywords)
                   }}
                   placeholder={t('retrievePanel.querySettings.hlkeywordsPlaceHolder')}
-                />
+                /> */}
+                <Select
+                  value={querySettings.hl_keywords?.[0]} // pick first keyword
+                  onValueChange={(value) => handleChange('hl_keywords', [value])} // wrap in array
+                >
+                    <SelectTrigger className="hover:bg-primary/5 h-9 cursor-pointer">
+                      <SelectValue placeholder="Select a high-level topic..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {graphTopics.map((topic) => (
+                          <SelectItem key={topic} value={topic}>{topic}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                </Select>
+
               </>
 
               <>

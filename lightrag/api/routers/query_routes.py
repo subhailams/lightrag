@@ -10,8 +10,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from lightrag.base import QueryParam
 from ..utils_api import get_combined_auth_dependency
 from pydantic import BaseModel, Field, field_validator
+from ...kg.shared_storage import get_graph_db_lock
 
 from ascii_colors import trace_exception
+
+from ...base import (
+    BaseGraphStorage,
+)
+from ...kg.shared_storage import get_graph_db, MemoryGraphStorage
 
 router = APIRouter(tags=["query"])
 
@@ -175,6 +181,19 @@ def create_query_routes(rag, api_key: Optional[str] = None, top_k: int = 60):
         except Exception as e:
             trace_exception(e)
             raise HTTPException(status_code=500, detail=str(e))
+
+    @router.get("/api/high_level_topics")
+    async def get_high_level_topics(knowledge_graph_inst: MemoryGraphStorage = Depends(get_graph_db)):
+        all_nodes = await knowledge_graph_inst.get_all_nodes()
+        entity_types = set()
+        print(all_nodes)
+        for node in all_nodes:
+            print(all_nodes)
+            entity_type = node.get("entity_type")
+            if entity_type:
+                entity_types.add(entity_type)
+
+        return sorted(all_nodes)
 
     @router.post("/query/stream", dependencies=[Depends(combined_auth)])
     async def query_text_stream(request: QueryRequest):

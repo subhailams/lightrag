@@ -45,9 +45,8 @@ temp/
 local_neo4jWorkDir/
 neo4jWorkDir/
 ollama_working_dir/
-new_working_dir/
 old_dir
-
+new_working_dir_2/
 # Data & Storage
 inputs/
 rag_storage/

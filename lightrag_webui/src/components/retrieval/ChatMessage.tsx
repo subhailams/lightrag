@@ -45,17 +45,32 @@ export const ChatMessage = ({ message }: { message: MessageWithError }) => {
       }`}
     >
       <pre className="relative break-words whitespace-pre-wrap">
-        <ReactMarkdown
-          className="dark:prose-invert max-w-none text-base text-sm"
-          remarkPlugins={[remarkGfm, remarkMath]}
-          rehypePlugins={[rehypeReact]}
-          skipHtml={false}
-          components={{
-            code: CodeHighlight
-          }}
-        >
-          {message.content}
-        </ReactMarkdown>
+      <ReactMarkdown
+  className="dark:prose-invert max-w-none text-base text-sm"
+  remarkPlugins={[remarkGfm, remarkMath]}
+  skipHtml={false}
+  components={{
+    code: CodeHighlight,
+    ol: ({ children }) => (
+      <ol
+        style={{
+          paddingLeft: '1.5rem',
+          listStyleType: 'decimal',
+          marginTop: '0.5rem',
+          marginBottom: '0.5rem'
+        }}
+      >
+        {children}
+      </ol>
+    ),
+    li: ({ children }) => (
+      <li style={{ marginBottom: '0.25rem' }}>{children}</li>
+    )
+  }}
+>
+  {message.content}
+</ReactMarkdown>
+
         {message.role === 'assistant' && message.content.length > 0 && (
           <Button
             onClick={handleCopyMarkdown}

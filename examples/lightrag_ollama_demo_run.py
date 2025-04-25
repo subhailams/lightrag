@@ -12,7 +12,7 @@ from lightrag.kg.shared_storage import initialize_pipeline_status
 WORKING_DIR = "/Users/subhailamathy/Documents/MS/Sp25/CS532/Project/LightRAG/working_dir"
 file_path = "/Users/subhailamathy/Documents/MS/Sp25/CS532/Project/LightRAG/inputs/papers.txt"
 
-ngrok_url = "https://978a-35-229-30-119.ngrok-free.app"
+ngrok_url = "http://localhost:11434"
 
 # neo4j
 BATCH_SIZE_NODES = 500

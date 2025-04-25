@@ -4,6 +4,7 @@ import asyncio
 from multiprocessing.synchronize import Lock as ProcessLock
 from multiprocessing import Manager
 from typing import Any, Dict, Optional, Union, TypeVar, Generic
+from typing import Any
 
 
 # Define a direct print function for critical logs that must be visible in all processes
@@ -19,6 +20,65 @@ def direct_log(message, level="INFO", enable_output: bool = True):
     """
     if enable_output:
         print(f"{level}: {message}", file=sys.stderr, flush=True)
+
+
+
+from ..base import BaseGraphStorage
+class MemoryGraphStorage(BaseGraphStorage):
+    def __init__(self):
+        self.nodes = {}
+        self.edges = {}
+
+    async def get_all_nodes(self):
+        return list(self.nodes.values())
+
+    async def get_node(self, node_id: str):
+        return self.nodes.get(node_id)
+
+    async def upsert_node(self, node_id: str, node_data: dict[str, Any]):
+        self.nodes[node_id] = node_data
+
+    async def delete_node(self, node_id: str):
+        self.nodes.pop(node_id, None)
+
+    async def has_node(self, node_id: str) -> bool:
+        return node_id in self.nodes
+
+    async def get_edge(self, src: str, tgt: str):
+        return self.edges.get((src, tgt))
+
+    async def upsert_edge(self, src: str, tgt: str, edge_data: dict[str, Any]):
+        self.edges[(src, tgt)] = edge_data
+
+    async def has_edge(self, src: str, tgt: str) -> bool:
+        return (src, tgt) in self.edges
+
+    async def get_node_edges(self, node_id: str):
+        return [(src, tgt) for (src, tgt) in self.edges if src == node_id or tgt == node_id]
+
+    async def node_degree(self, node_id: str):
+        return sum(1 for src, tgt in self.edges if src == node_id or tgt == node_id)
+
+    async def edge_degree(self, src: str, tgt: str):
+        return 1 if (src, tgt) in self.edges else 0
+
+    async def embed_nodes(self, nodes: list[dict[str, Any]]):
+        pass  # Optional no-op
+
+    async def index_done_callback(self):
+        pass  # Optional no-op
+
+    async def get_knowledge_graph(self):
+        return {
+            "nodes": list(self.nodes.values()),
+            "edges": list(self.edges.values()),
+        }
+
+    async def get_all_labels(self):
+        return list(set(n.get("entity_type") for n in self.nodes.values() if "entity_type" in n))
+    
+def get_graph_db():
+    return MemoryGraphStorage()  # or whatever in-memory backend you use
 
 
 T = TypeVar("T")

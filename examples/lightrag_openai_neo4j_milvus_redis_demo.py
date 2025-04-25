@@ -13,7 +13,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 WORKING_DIR = "/Users/subhailamathy/Documents/MS/Sp25/CS532/Project/LightRAG/working_dir"
 file_path = "/Users/subhailamathy/Documents/MS/Sp25/CS532/Project/LightRAG/inputs/papers.txt"
 
-ngrok_url = "https://978a-35-229-30-119.ngrok-free.app"
+ngrok_url = "http://localhost:11434"
 OPEN_AI_KEY = ""
 
 # redis

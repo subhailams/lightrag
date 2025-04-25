@@ -205,6 +205,7 @@ def get_default_host(binding_type: str) -> str:
     )  # fallback to ollama if unknown
 
 
+
 def get_env_value(env_key: str, default: any, value_type: type = str) -> any:
     """
     Get value from environment variable with type conversion

@@ -45,9 +45,9 @@ function TabsNavigation() {
         <NavigationTab value="retrieval" currentTab={currentTab}>
           {t('header.retrieval')}
         </NavigationTab>
-        <NavigationTab value="api" currentTab={currentTab}>
+        {/* <NavigationTab value="api" currentTab={currentTab}>
           {t('header.api')}
-        </NavigationTab>
+        </NavigationTab> */}
       </TabsList>
     </div>
   )
@@ -69,14 +69,16 @@ export default function SiteHeader() {
     <header className="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 flex h-10 w-full border-b px-4 backdrop-blur">
       <div className="w-[200px] flex items-center">
         <a href={webuiPrefix} className="flex items-center gap-2">
-          <ZapIcon className="size-4 text-emerald-400" aria-hidden="true" />
+        <img src="logo_argraph.png" alt="ArGraph Logo" className="h-10 w-10" />
+
+          {/* <ZapIcon className="size-4 text-emerald-400" aria-hidden="true" /> */}
           {/* <img src='/logo.png' className="size-4" /> */}
           <span className="font-bold md:inline-block">{SiteInfo.name}</span>
-          {versionDisplay && (
+          {/* {versionDisplay && (
             <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
               v{versionDisplay}
             </span>
-          )}
+          )} */}
         </a>
       </div>
 
@@ -92,9 +94,9 @@ export default function SiteHeader() {
       <nav className="w-[200px] flex items-center justify-end">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" side="bottom" tooltip={t('header.projectRepository')}>
-            <a href={SiteInfo.github} target="_blank" rel="noopener noreferrer">
+            {/* <a href={SiteInfo.github} target="_blank" rel="noopener noreferrer">
               <GithubIcon className="size-4" aria-hidden="true" />
-            </a>
+            </a> */}
           </Button>
           <AppSettings />
           {!isGuestMode && (
